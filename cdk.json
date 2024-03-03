@@ -61,6 +61,23 @@
     "@aws-cdk/aws-rds:preventRenderingDeprecatedCredentials": true,
     "@aws-cdk/aws-codepipeline-actions:useNewDefaultBranchForCodeCommitSource": true,
     "@aws-cdk/aws-cloudwatch-actions:changeLambdaPermissionLogicalIdForLambdaAction": true,
-    "@aws-cdk/aws-codepipeline:crossAccountKeysDefaultValueToFalse": true
+    "@aws-cdk/aws-codepipeline:crossAccountKeysDefaultValueToFalse": true,
+    "dev1": {
+      "vpc": {
+        "cidr": "172.16.0.0/19",
+        "useNatInstance": true,
+        "natGateways": 0
+      }
+    },
+    "stg1": {
+
+    },
+    "qas1": {
+
+    },
+    "prd1": {
+
+    }
+
   }
 }
