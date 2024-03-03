@@ -5,6 +5,7 @@ import { Construct } from "constructs";
 import { NamingUtil } from "../../utils/naming-util";
 import { CdkUtil } from "../../utils/cdk-util";
 import { pascalCase } from "change-case";
+import { StringParameter } from "aws-cdk-lib/aws-ssm";
 
 export class VpcNetworkStack extends Stack {
   private cdkUtil = CdkUtil.getInstance();
@@ -93,5 +94,11 @@ export class VpcNetworkStack extends Stack {
 
     // Create a VPC in practice.
     const vpc = new ec2.Vpc(this, id, vpcProps);
+
+    // Put the VPC ID into SSM Parameter Store instead of Output.
+    new StringParameter(this, 'VpcIdParameter', {
+      parameterName: this.cdkUtil.naming.generateParameterStoreName('vpc-id'),
+      stringValue: vpc.vpcId,
+    })
   }
 }
