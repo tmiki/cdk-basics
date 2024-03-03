@@ -2,7 +2,6 @@
 import { Stack, StackProps } from "aws-cdk-lib";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
-import { NamingUtil } from "../../utils/naming-util";
 import { CdkUtil } from "../../utils/cdk-util";
 import { pascalCase } from "change-case";
 import { StringParameter } from "aws-cdk-lib/aws-ssm";
@@ -44,6 +43,7 @@ export class VpcNetworkStack extends Stack {
         {
           name: "public-reserved",
           subnetType: ec2.SubnetType.PUBLIC,
+          reserved: true,
         },
         {
           name: "private",
@@ -52,6 +52,7 @@ export class VpcNetworkStack extends Stack {
         {
           name: "private-reserved",
           subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+          reserved: true,
         },
         {
           name: "isolated",
@@ -60,6 +61,7 @@ export class VpcNetworkStack extends Stack {
         {
           name: "isolated-reserved",
           subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+          reserved: true,
         },
       ],
       restrictDefaultSecurityGroup: false,
@@ -93,12 +95,12 @@ export class VpcNetworkStack extends Stack {
     }
 
     // Create a VPC in practice.
-    const vpc = new ec2.Vpc(this, id, vpcProps);
+    const vpc = new ec2.Vpc(this, pascalCase(id), vpcProps);
 
     // Put the VPC ID into SSM Parameter Store instead of Output.
-    new StringParameter(this, 'VpcIdParameter', {
-      parameterName: this.cdkUtil.naming.generateParameterStoreName('vpc-id'),
+    new StringParameter(this, "VpcIdParameter", {
+      parameterName: this.cdkUtil.naming.generateParameterStoreName("vpc-id"),
       stringValue: vpc.vpcId,
-    })
+    });
   }
 }
