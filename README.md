@@ -54,14 +54,14 @@ Initialize the CDK environment.
 
 ```bash
 $ cdk bootstrap
- ⏳  Bootstrapping environment aws://927800373945/us-west-2...
+ ⏳  Bootstrapping environment aws://123456789012/us-west-2...
 Trusted accounts for deployment: (none)
 Trusted accounts for lookup: (none)
 Using default execution policy of 'arn:aws:iam::aws:policy/AdministratorAccess'. Pass '--cloudformation-execution-policies' to customize.
 
  ✨ hotswap deployment skipped - no changes were detected (use --force to override)
 
- ✅  Environment aws://927800373945/us-west-2 bootstrapped (no changes).
+ ✅  Environment aws://123456789012/us-west-2 bootstrapped (no changes).
 ```
 
 ## Deploy stacks
