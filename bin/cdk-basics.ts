@@ -6,8 +6,6 @@ import { CommonS3bucketStack } from '../lib/stacks/common-s3bucket-stack';
 
 const cdkUtil = CdkUtil.getInstance();
 
-console.log(cdkUtil.e.environmentPassingInStack);
-
 const app = new cdk.App();
 
 const vpcNetworkStackName = cdkUtil.naming.generateResourceName('vpc');
