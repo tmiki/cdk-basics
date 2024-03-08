@@ -12,16 +12,7 @@ export class VpcNetworkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // console.log('--------------------"this" scope in the VpcNetworkStack.--------------------');
-    // console.log(this);
-
-    console.log("-------------------- all context --------------------");
-    let allContext = this.cdkUtil.getContext(this);
-    console.log(allContext);
-
-    console.log("-------------------- sub context --------------------");
     let vpcContext = this.cdkUtil.getContext(this, "vpc");
-    console.log(vpcContext);
 
     // Creating a VPC and belonging resources.
     //

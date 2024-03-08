@@ -9,7 +9,6 @@ export class ProjectEnvironment {
     globalRegionName = 'us-east-1'
 
     constructor() {
-        console.log ('initializing ProjectEnvironment.')
         // Retrieve environemt variables and put them into this object.
         const pe = process.env;
         if ((pe.ENV_NAME === undefined) || (pe.PJ_CODE_NAME === undefined) || (pe.CDK_DEFAULT_ACCOUNT === undefined) || (pe.CDK_DEFAULT_REGION === undefined)) {
