@@ -14,16 +14,17 @@ export class CicdPipelineStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
+    const context = this.cdkUtil.getContext(this,'cicdPipeline')
 
     // S3 Buckets
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html
-    const artifactBucketName = this.cdkUtil.naming.generateResourceNameWithAccountIdCurrentRegion("cicd-artifact-2");
+    const artifactBucketName = this.cdkUtil.naming.generateResourceNameWithAccountIdCurrentRegion("cicd-artifact");
     const artifactBucket = new Bucket(this, pascalCase(artifactBucketName), {
       bucketName: artifactBucketName,
       autoDeleteObjects: true,
       removalPolicy: RemovalPolicy.DESTROY,
     });
-    const deployDestBucketName = this.cdkUtil.naming.generateResourceNameWithAccountIdCurrentRegion("cicd-deploy-dest-2");
+    const deployDestBucketName = this.cdkUtil.naming.generateResourceNameWithAccountIdCurrentRegion("cicd-deploy-dest");
     const deployDestinationBucket = new Bucket(this, pascalCase(deployDestBucketName), {
       bucketName: deployDestBucketName,
       autoDeleteObjects: true,
@@ -64,29 +65,29 @@ export class CicdPipelineStack extends Stack {
     
     const sourceOutput = new Artifact();
     const sourceAction = new CodeStarConnectionsSourceAction({
-      actionName: 'GitHub_Source',
+      actionName: 'GitHubSource',
       role: iamRoleForStages,
-      owner: 'tmiki',
-      repo: 'examining-cicd-with-github',
-      branch: 'main',
+      owner: context.gitRepository.owner,
+      repo: context.gitRepository.name,
+      branch: context.gitRepository.branch,
       connectionArn: connection.attrConnectionArn,
       output: sourceOutput,
     });
     pipeline.addStage({
-      stageName: 'Source',
+      stageName: 'SourceStage',
       actions: [sourceAction],
     });
 
     // Deploy stage
     const deployAction = new S3DeployAction({
-      actionName: 'S3_Deploy',
+      actionName: 'S3Deploy',
       role: iamRoleForStages,
       bucket: deployDestinationBucket,
       input: sourceOutput,
       extract: true,
     });
     pipeline.addStage({
-      stageName: 'Deploy',
+      stageName: 'DeployStage',
       actions: [deployAction],
     });
   }
@@ -171,10 +172,10 @@ export class CicdPipelineStack extends Stack {
     });
 
     // Create the IAM Role for CodePipeline pipelines.
-    const iamRoleForPipelineName = this.cdkUtil.naming.generateResourceNameWithRegion(`${namePrefix}-role`)
+    const iamRoleForPipelineName = this.cdkUtil.naming.generateResourceName(`${namePrefix}-role`)
     const iamRoleForPipeline = new Role(this, pascalCase(iamRoleForPipelineName),{
       roleName: iamRoleForPipelineName,
-      path: `/`,
+      path: '/',
       assumedBy: new CompositePrincipal(
         new ServicePrincipal('codepipeline.amazonaws.com')
       ),
@@ -183,7 +184,6 @@ export class CicdPipelineStack extends Stack {
 
     return iamRoleForPipeline
   }
-
 
   private createIAMRoleForStages(namePrefix: string, params: {connectionArn: string, iamRoleForPipelineArn: string, artifactBucketArn: string, deployDestBucketArn: string}): Role {
     // AWS CDK documents used within here.
@@ -195,7 +195,7 @@ export class CicdPipelineStack extends Stack {
 
     // Create the IAM Custom Managed Policy for the Role of CodePipeline stages.
     // - Source stage
-    const iamPolicyForSourceStageName = this.cdkUtil.naming.generateResourceNameWithRegion(`${namePrefix}-source-policy`)
+    const iamPolicyForSourceStageName = this.cdkUtil.naming.generateResourceName(`${namePrefix}-source-policy`)
     const iamPolicyForSourceStage = new ManagedPolicy(this,pascalCase(iamPolicyForSourceStageName),
       {
         managedPolicyName: iamPolicyForSourceStageName,
@@ -236,7 +236,7 @@ export class CicdPipelineStack extends Stack {
     );
 
     // - Deploy stage
-    const iamPolicyForDeployStageName = this.cdkUtil.naming.generateResourceNameWithRegion(`${namePrefix}-deploy-policy`)
+    const iamPolicyForDeployStageName = this.cdkUtil.naming.generateResourceName(`${namePrefix}-deploy-policy`)
     const iamPolicyForDeployStage = new ManagedPolicy(this,pascalCase(iamPolicyForDeployStageName),
       {
         managedPolicyName: iamPolicyForDeployStageName,
@@ -271,10 +271,10 @@ export class CicdPipelineStack extends Stack {
     );
 
     // Create the IAM Role for CodeBuild/CodeDeploy tasks.
-    const iamRoleForStagesName = this.cdkUtil.naming.generateResourceNameWithRegion(`${namePrefix}-role`)
+    const iamRoleForStagesName = this.cdkUtil.naming.generateResourceName(`${namePrefix}-role`)
     const iamRoleForStages = new Role(this, pascalCase(iamRoleForStagesName),{
       roleName: iamRoleForStagesName,
-      path: `/`,
+      path: '/',
       assumedBy: new CompositePrincipal(
         new ArnPrincipal(params.iamRoleForPipelineArn),
         new ServicePrincipal('codebuild.amazonaws.com'),
@@ -284,6 +284,4 @@ export class CicdPipelineStack extends Stack {
 
     return iamRoleForStages
   }
-
-
 }
