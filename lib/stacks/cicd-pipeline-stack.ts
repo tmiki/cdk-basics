@@ -18,13 +18,13 @@ export class CicdPipelineStack extends Stack {
 
     // S3 Buckets
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html
-    const artifactBucketName = this.cdkUtil.naming.generateResourceNameWithAccountIdCurrentRegion("cicd-artifact-2");
+    const artifactBucketName = this.cdkUtil.naming.generateResourceNameWithAccountIdCurrentRegion("cicd-artifact");
     const artifactBucket = new Bucket(this, pascalCase(artifactBucketName), {
       bucketName: artifactBucketName,
       autoDeleteObjects: true,
       removalPolicy: RemovalPolicy.DESTROY,
     });
-    const deployDestBucketName = this.cdkUtil.naming.generateResourceNameWithAccountIdCurrentRegion("cicd-deploy-dest-2");
+    const deployDestBucketName = this.cdkUtil.naming.generateResourceNameWithAccountIdCurrentRegion("cicd-deploy-dest");
     const deployDestinationBucket = new Bucket(this, pascalCase(deployDestBucketName), {
       bucketName: deployDestBucketName,
       autoDeleteObjects: true,
@@ -172,7 +172,7 @@ export class CicdPipelineStack extends Stack {
     });
 
     // Create the IAM Role for CodePipeline pipelines.
-    const iamRoleForPipelineName = this.cdkUtil.naming.generateResourceNameWithRegion(`${namePrefix}-role`)
+    const iamRoleForPipelineName = this.cdkUtil.naming.generateResourceName(`${namePrefix}-role`)
     const iamRoleForPipeline = new Role(this, pascalCase(iamRoleForPipelineName),{
       roleName: iamRoleForPipelineName,
       path: '/',
@@ -195,7 +195,7 @@ export class CicdPipelineStack extends Stack {
 
     // Create the IAM Custom Managed Policy for the Role of CodePipeline stages.
     // - Source stage
-    const iamPolicyForSourceStageName = this.cdkUtil.naming.generateResourceNameWithRegion(`${namePrefix}-source-policy`)
+    const iamPolicyForSourceStageName = this.cdkUtil.naming.generateResourceName(`${namePrefix}-source-policy`)
     const iamPolicyForSourceStage = new ManagedPolicy(this,pascalCase(iamPolicyForSourceStageName),
       {
         managedPolicyName: iamPolicyForSourceStageName,
@@ -236,7 +236,7 @@ export class CicdPipelineStack extends Stack {
     );
 
     // - Deploy stage
-    const iamPolicyForDeployStageName = this.cdkUtil.naming.generateResourceNameWithRegion(`${namePrefix}-deploy-policy`)
+    const iamPolicyForDeployStageName = this.cdkUtil.naming.generateResourceName(`${namePrefix}-deploy-policy`)
     const iamPolicyForDeployStage = new ManagedPolicy(this,pascalCase(iamPolicyForDeployStageName),
       {
         managedPolicyName: iamPolicyForDeployStageName,
@@ -271,7 +271,7 @@ export class CicdPipelineStack extends Stack {
     );
 
     // Create the IAM Role for CodeBuild/CodeDeploy tasks.
-    const iamRoleForStagesName = this.cdkUtil.naming.generateResourceNameWithRegion(`${namePrefix}-role`)
+    const iamRoleForStagesName = this.cdkUtil.naming.generateResourceName(`${namePrefix}-role`)
     const iamRoleForStages = new Role(this, pascalCase(iamRoleForStagesName),{
       roleName: iamRoleForStagesName,
       path: '/',
