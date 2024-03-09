@@ -11,7 +11,7 @@ export class CommonS3bucketStack extends Stack {
     super(scope, id, props);
 
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html
-    const bucketName = this.cdkUtil.naming.generateResourceNameWithAccountIdCurrentRegion("examining");
+    const bucketName = this.cdkUtil.naming.generateResourceNameWithAccountIdCurrentRegion("common");
     const s3bucket = new S3BucketBaseline(this, pascalCase(bucketName), {
       bucketName: bucketName,
       autoDeleteObjects: true,
