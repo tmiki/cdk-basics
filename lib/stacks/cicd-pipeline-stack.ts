@@ -175,7 +175,7 @@ export class CicdPipelineStack extends Stack {
     const iamRoleForPipelineName = this.cdkUtil.naming.generateResourceNameWithRegion(`${namePrefix}-role`)
     const iamRoleForPipeline = new Role(this, pascalCase(iamRoleForPipelineName),{
       roleName: iamRoleForPipelineName,
-      path: `/`,
+      path: '/',
       assumedBy: new CompositePrincipal(
         new ServicePrincipal('codepipeline.amazonaws.com')
       ),
@@ -274,7 +274,7 @@ export class CicdPipelineStack extends Stack {
     const iamRoleForStagesName = this.cdkUtil.naming.generateResourceNameWithRegion(`${namePrefix}-role`)
     const iamRoleForStages = new Role(this, pascalCase(iamRoleForStagesName),{
       roleName: iamRoleForStagesName,
-      path: `/`,
+      path: '/',
       assumedBy: new CompositePrincipal(
         new ArnPrincipal(params.iamRoleForPipelineArn),
         new ServicePrincipal('codebuild.amazonaws.com'),
