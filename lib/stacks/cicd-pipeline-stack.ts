@@ -143,7 +143,7 @@ export class CicdPipelineStack extends Stack {
             "cloudformation:SetStackPolicy",
             "cloudformation:ValidateTemplate",
           ],
-          resources: ["*"],
+          resources: [`arn:aws:cloudformation:${this.cdkUtil.e.regionName}:${this.cdkUtil.e.accountId}:stack/${this.cdkUtil.e.pjCodeName}-${this.cdkUtil.e.envName}-*`],
         }),
         new PolicyStatement({
           actions: [
