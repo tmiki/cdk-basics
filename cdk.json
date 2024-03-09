@@ -67,6 +67,13 @@
         "cidr": "172.16.0.0/19",
         "useNatInstance": true,
         "natGateways": 0
+      },
+      "cicdPipeline" : {
+        "gitRepository" :{
+          "owner": "tmiki",
+          "name": "examining-cicd-with-github",
+          "branch": "main"
+        }
       }
     },
     "stg1": {

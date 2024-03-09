@@ -14,6 +14,7 @@ export class CicdPipelineStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
+    const context = this.cdkUtil.getContext(this,'cicdPipeline')
 
     // S3 Buckets
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html
@@ -66,9 +67,9 @@ export class CicdPipelineStack extends Stack {
     const sourceAction = new CodeStarConnectionsSourceAction({
       actionName: 'GitHub_Source',
       role: iamRoleForStages,
-      owner: 'tmiki',
-      repo: 'examining-cicd-with-github',
-      branch: 'main',
+      owner: context.gitRepository.owner,
+      repo: context.gitRepository.name,
+      branch: context.gitRepository.branch,
       connectionArn: connection.attrConnectionArn,
       output: sourceOutput,
     });
