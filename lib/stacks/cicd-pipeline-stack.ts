@@ -65,7 +65,7 @@ export class CicdPipelineStack extends Stack {
     
     const sourceOutput = new Artifact();
     const sourceAction = new CodeStarConnectionsSourceAction({
-      actionName: 'GitHub_Source',
+      actionName: 'GitHubSource',
       role: iamRoleForStages,
       owner: context.gitRepository.owner,
       repo: context.gitRepository.name,
@@ -74,20 +74,20 @@ export class CicdPipelineStack extends Stack {
       output: sourceOutput,
     });
     pipeline.addStage({
-      stageName: 'Source',
+      stageName: 'SourceStage',
       actions: [sourceAction],
     });
 
     // Deploy stage
     const deployAction = new S3DeployAction({
-      actionName: 'S3_Deploy',
+      actionName: 'S3Deploy',
       role: iamRoleForStages,
       bucket: deployDestinationBucket,
       input: sourceOutput,
       extract: true,
     });
     pipeline.addStage({
-      stageName: 'Deploy',
+      stageName: 'DeployStage',
       actions: [deployAction],
     });
   }
@@ -184,7 +184,6 @@ export class CicdPipelineStack extends Stack {
 
     return iamRoleForPipeline
   }
-
 
   private createIAMRoleForStages(namePrefix: string, params: {connectionArn: string, iamRoleForPipelineArn: string, artifactBucketArn: string, deployDestBucketArn: string}): Role {
     // AWS CDK documents used within here.
@@ -285,6 +284,4 @@ export class CicdPipelineStack extends Stack {
 
     return iamRoleForStages
   }
-
-
 }
