@@ -34,10 +34,9 @@ export class CicdPipelineStack extends Stack {
     // CodeStar connection with GitHub apps
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_codestarconnections.CfnConnection.html
     const connectionName = this.util.naming.generateResourceName("examining-conn");
-    console.log(connectionName)
     if (connectionName.length > 32 ){
       throw new Error(
-        'The name lenght of a CodeStar connection cannot exceed 32 characters.'
+        `The name lenght of a CodeStar connection cannot exceed 32 characters. connectionName: ${connectionName}`
       );
     }
     const connection = new CfnConnection(this, pascalCase(connectionName), {
