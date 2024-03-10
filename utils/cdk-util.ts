@@ -2,6 +2,7 @@ import { Construct } from "constructs/lib/construct"
 import { ProjectEnvironment } from './project-environment';
 import { NamingUtil } from "./naming-util";
 import { LookupUtil } from "./lookup-util";
+import { DebugOutUtil } from "./debug-out-util";
 
 
 export class CdkUtil {
@@ -9,11 +10,13 @@ export class CdkUtil {
   e: ProjectEnvironment;
   naming: NamingUtil;
   lookup: LookupUtil;
+  debugOut: DebugOutUtil;
 
   constructor() {
     this.e = new ProjectEnvironment();
     this.naming = new NamingUtil(this.e);
     this.lookup = new LookupUtil(this.e);
+    this.debugOut = new DebugOutUtil(this.e);
   }
 
   // Make this class Singleton.

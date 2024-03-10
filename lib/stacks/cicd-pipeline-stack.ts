@@ -6,7 +6,7 @@ import { pascalCase } from "change-case";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { Artifact, Pipeline, PipelineType } from "aws-cdk-lib/aws-codepipeline";
 import { CodeStarConnectionsSourceAction, S3DeployAction } from "aws-cdk-lib/aws-codepipeline-actions";
-import { AccountPrincipal, ArnPrincipal, CompositePrincipal, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
+import { ArnPrincipal, CompositePrincipal, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 
 export class CicdPipelineStack extends Stack {
   private util = CdkUtil.getInstance();
@@ -170,6 +170,15 @@ export class CicdPipelineStack extends Stack {
         }),
       ],
     });
+
+    // Convert the policy document to JSON
+    const iamPolicyJson = JSON.stringify(iamPolicyDocumentForPipeline.toJSON(), null, 2);
+
+    // Specify the output filename
+    const outFileName = `${__dirname}/../../debug_out/${namePrefix}-policy.json`;
+
+    // Write the JSON to the specified file
+    this.util.debugOut.writeJsonFile(outFileName, iamPolicyJson)
 
     // Create the IAM Role for CodePipeline pipelines.
     const iamRoleForPipelineName = this.util.naming.generateResourceName(`${namePrefix}-role`)
