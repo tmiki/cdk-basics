@@ -3,6 +3,7 @@
 *.d.ts
 node_modules
 .envrc
+debug_out/
 
 # CDK asset staging directory
 .cdk.staging
