@@ -7,12 +7,12 @@ import { pascalCase } from "change-case";
 import { StringParameter } from "aws-cdk-lib/aws-ssm";
 
 export class VpcNetworkStack extends Stack {
-  private cdkUtil = CdkUtil.getInstance();
+  private util = CdkUtil.getInstance();
 
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    let vpcContext = this.cdkUtil.getContext(this, "vpc");
+    let vpcContext = this.util.getContext(this, "vpc");
 
     // Creating a VPC and belonging resources.
     //
@@ -90,7 +90,7 @@ export class VpcNetworkStack extends Stack {
 
     // Put the VPC ID into SSM Parameter Store instead of Output.
     new StringParameter(this, "VpcIdParameter", {
-      parameterName: this.cdkUtil.naming.generateParameterStoreName("vpc-id"),
+      parameterName: this.util.naming.generateParameterStoreName("vpc-id"),
       stringValue: vpc.vpcId,
     });
   }

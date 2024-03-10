@@ -5,14 +5,14 @@ import { CdkUtil } from '../utils/cdk-util';
 import { CommonS3bucketStack } from '../lib/stacks/common-s3bucket-stack';
 import { CicdPipelineStack } from '../lib/stacks/cicd-pipeline-stack';
 
-const cdkUtil = CdkUtil.getInstance();
+const util = CdkUtil.getInstance();
 
 const app = new cdk.App();
 
-const vpcNetworkStackName = cdkUtil.naming.generateResourceName('vpc');
-new VpcNetworkStack(app, vpcNetworkStackName, {env: cdkUtil.e.environmentPassingInStack});
+const vpcNetworkStackName = util.naming.generateResourceName('vpc');
+new VpcNetworkStack(app, vpcNetworkStackName, {env: util.e.environmentPassingInStack});
 
-new CicdPipelineStack(app, cdkUtil.naming.generateResourceName('cicd-pipeline'), {env: cdkUtil.e.environmentPassingInStack});
+new CicdPipelineStack(app, util.naming.generateResourceName('cicd-pipeline'), {env: util.e.environmentPassingInStack});
 
-new CommonS3bucketStack(app, cdkUtil.naming.generateResourceName('common-s3bucket'), {env: cdkUtil.e.environmentPassingInStack});
+new CommonS3bucketStack(app, util.naming.generateResourceName('common-s3bucket'), {env: util.e.environmentPassingInStack});
 
