@@ -1,5 +1,5 @@
-import { paramCase } from "change-case";
-import { ProjectEnvironment } from "./project-environment";
+import { paramCase } from 'change-case';
+import { ProjectEnvironment } from './project-environment';
 
 export class NamingUtil {
   e: ProjectEnvironment;
@@ -9,23 +9,22 @@ export class NamingUtil {
   }
 
   public generateResourceName(name: string) {
-    return paramCase(`${this.e.pjCodeName}-${this.e.envName}-${name}`)
+    return paramCase(`${this.e.pjCodeName}-${this.e.envName}-${name}`);
   }
 
   public generateResourceNameWithRegion(name: string) {
-    return paramCase(`${this.e.pjCodeName}-${this.e.envName}-${name}-${this.e.regionName}`)
+    return paramCase(`${this.e.pjCodeName}-${this.e.envName}-${name}-${this.e.regionName}`);
   }
 
   public generateResourceNameWithAccountIdCurrentRegion(name: string) {
-    return paramCase(`${this.e.pjCodeName}-${this.e.envName}-${name}-${this.e.accountId}-${this.e.regionName}`)
+    return paramCase(`${this.e.pjCodeName}-${this.e.envName}-${name}-${this.e.accountId}-${this.e.regionName}`);
   }
 
   public generateResourceNameWithAccountIdSpecificRegion(name: string, region: string) {
-    return paramCase(`${this.e.pjCodeName}-${this.e.envName}-${name}-${this.e.accountId}-${region}`)
+    return paramCase(`${this.e.pjCodeName}-${this.e.envName}-${name}-${this.e.accountId}-${region}`);
   }
 
   public generateParameterStoreName(name: string) {
-    return (`/${this.e.pjCodeName}/${this.e.envName}/${name}`)
+    return `/${this.e.pjCodeName}/${this.e.envName}/${name}`;
   }
-
 }

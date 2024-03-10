@@ -1,10 +1,10 @@
 // import * as cdk from 'aws-cdk-lib';
-import { Stack, StackProps } from "aws-cdk-lib";
-import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { Construct } from "constructs";
-import { CdkUtil } from "../../utils/cdk-util";
-import { pascalCase } from "change-case";
-import { StringParameter } from "aws-cdk-lib/aws-ssm";
+import { Stack, StackProps } from 'aws-cdk-lib';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import { Construct } from 'constructs';
+import { CdkUtil } from '../../utils/cdk-util';
+import { pascalCase } from 'change-case';
+import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 
 export class VpcNetworkStack extends Stack {
   private util = CdkUtil.getInstance();
@@ -12,7 +12,7 @@ export class VpcNetworkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    let vpcContext = this.util.getContext(this, "vpc");
+    let vpcContext = this.util.getContext(this, 'vpc');
 
     // Creating a VPC and belonging resources.
     //
@@ -28,29 +28,29 @@ export class VpcNetworkStack extends Stack {
       reservedAzs: 1,
       subnetConfiguration: [
         {
-          name: "public",
+          name: 'public',
           subnetType: ec2.SubnetType.PUBLIC,
         },
         {
-          name: "public-reserved",
+          name: 'public-reserved',
           subnetType: ec2.SubnetType.PUBLIC,
           reserved: true,
         },
         {
-          name: "private",
+          name: 'private',
           subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
         },
         {
-          name: "private-reserved",
+          name: 'private-reserved',
           subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
           reserved: true,
         },
         {
-          name: "isolated",
+          name: 'isolated',
           subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
         },
         {
-          name: "isolated-reserved",
+          name: 'isolated-reserved',
           subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
           reserved: true,
         },
@@ -68,10 +68,7 @@ export class VpcNetworkStack extends Stack {
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.AmazonLinux2023ImageSsmParameterProps.html
     if (vpcContext.useNatInstance) {
       const natInstanceProvider = ec2.NatProvider.instance({
-        instanceType: ec2.InstanceType.of(
-          ec2.InstanceClass.T2,
-          ec2.InstanceSize.MICRO
-        ),
+        instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO),
         machineImage: ec2.MachineImage.latestAmazonLinux2023({
           cpuType: ec2.AmazonLinuxCpuType.X86_64,
         }),
@@ -89,8 +86,8 @@ export class VpcNetworkStack extends Stack {
     const vpc = new ec2.Vpc(this, pascalCase(id), vpcProps);
 
     // Put the VPC ID into SSM Parameter Store instead of Output.
-    new StringParameter(this, "VpcIdParameter", {
-      parameterName: this.util.naming.generateParameterStoreName("vpc-id"),
+    new StringParameter(this, 'VpcIdParameter', {
+      parameterName: this.util.naming.generateParameterStoreName('vpc-id'),
       stringValue: vpc.vpcId,
     });
   }

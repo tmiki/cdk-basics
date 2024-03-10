@@ -1,6 +1,6 @@
-import { Construct } from "constructs/lib/construct";
-import { ProjectEnvironment } from "./project-environment";
-import { Vpc } from "aws-cdk-lib/aws-ec2";
+import { Construct } from 'constructs/lib/construct';
+import { ProjectEnvironment } from './project-environment';
+import { Vpc } from 'aws-cdk-lib/aws-ec2';
 
 export class LookupUtil {
   e: ProjectEnvironment;

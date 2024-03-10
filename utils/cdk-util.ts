@@ -1,9 +1,8 @@
-import { Construct } from "constructs/lib/construct"
+import { Construct } from 'constructs/lib/construct';
 import { ProjectEnvironment } from './project-environment';
-import { NamingUtil } from "./naming-util";
-import { LookupUtil } from "./lookup-util";
-import { DebugOutUtil } from "./debug-out-util";
-
+import { NamingUtil } from './naming-util';
+import { LookupUtil } from './lookup-util';
+import { DebugOutUtil } from './debug-out-util';
 
 export class CdkUtil {
   // Composition objects.
@@ -29,20 +28,17 @@ export class CdkUtil {
   }
 
   // Retrieve a series of object from "cdk.json" for each specific environment.
-  public getContext(scope: Construct, contextName: string = "") {
+  public getContext(scope: Construct, contextName: string = '') {
     let context;
-    if (contextName == "") {
+    if (contextName == '') {
       context = scope.node.tryGetContext(this.e.envName);
     } else {
       context = scope.node.tryGetContext(this.e.envName)[contextName];
     }
 
     if (!context) {
-      throw new Error(
-        '"cdk.json" file or specified "contextName" parameter have gone wrong something.'
-      );
+      throw new Error('"cdk.json" file or specified "contextName" parameter have gone wrong something.');
     }
     return context;
   }
 }
-
