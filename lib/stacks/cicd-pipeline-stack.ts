@@ -6,16 +6,7 @@ import { pascalCase } from 'change-case';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Artifact, Pipeline, PipelineType } from 'aws-cdk-lib/aws-codepipeline';
 import { CodeStarConnectionsSourceAction, S3DeployAction } from 'aws-cdk-lib/aws-codepipeline-actions';
-import {
-  ArnPrincipal,
-  CompositePrincipal,
-  ManagedPolicy,
-  Policy,
-  PolicyDocument,
-  PolicyStatement,
-  Role,
-  ServicePrincipal,
-} from 'aws-cdk-lib/aws-iam';
+import { ArnPrincipal, CompositePrincipal, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 export class CicdPipelineStack extends Stack {
   private util = CdkUtil.getInstance();
@@ -23,7 +14,7 @@ export class CicdPipelineStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const context = this.util.getContext(this, 'cicdPipeline');
+    const cicdPipelineConfig = this.util.getEnvConfig('cicdPipeline');
 
     // S3 Buckets
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html
@@ -44,9 +35,7 @@ export class CicdPipelineStack extends Stack {
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_codestarconnections.CfnConnection.html
     const connectionName = this.util.naming.generateResourceName('examining-conn');
     if (connectionName.length > 32) {
-      throw new Error(
-        `The name lenght of a CodeStar connection cannot exceed 32 characters. connectionName: ${connectionName}`
-      );
+      throw new Error(`The name lenght of a CodeStar connection cannot exceed 32 characters. connectionName: ${connectionName}`);
     }
     const connection = new CfnConnection(this, pascalCase(connectionName), {
       connectionName: connectionName,
@@ -82,9 +71,9 @@ export class CicdPipelineStack extends Stack {
     const sourceAction = new CodeStarConnectionsSourceAction({
       actionName: 'GitHubSource',
       role: iamRoleForStages,
-      owner: context.gitRepository.owner,
-      repo: context.gitRepository.name,
-      branch: context.gitRepository.branch,
+      owner: cicdPipelineConfig.apps.examining.gitRepository.owner,
+      repo: cicdPipelineConfig.apps.examining.gitRepository.name,
+      branch: cicdPipelineConfig.apps.examining.gitRepository.branch,
       connectionArn: connection.attrConnectionArn,
       output: sourceOutput,
     });
@@ -122,12 +111,7 @@ export class CicdPipelineStack extends Stack {
           resources: ['*'],
           conditions: {
             StringEqualsIfExists: {
-              'iam:PassedToService': [
-                'cloudformation.amazonaws.com',
-                'elasticbeanstalk.amazonaws.com',
-                'ec2.amazonaws.com',
-                'ecs-tasks.amazonaws.com',
-              ],
+              'iam:PassedToService': ['cloudformation.amazonaws.com', 'elasticbeanstalk.amazonaws.com', 'ec2.amazonaws.com', 'ecs-tasks.amazonaws.com'],
             },
           },
         }),
@@ -163,17 +147,10 @@ export class CicdPipelineStack extends Stack {
             'cloudformation:SetStackPolicy',
             'cloudformation:ValidateTemplate',
           ],
-          resources: [
-            `arn:aws:cloudformation:${this.util.e.regionName}:${this.util.e.accountId}:stack/${this.util.e.pjCodeName}-${this.util.e.envName}-*`,
-          ],
+          resources: [`arn:aws:cloudformation:${this.util.e.regionName}:${this.util.e.accountId}:stack/${this.util.e.pjCodeName}-${this.util.e.envName}-*`],
         }),
         new PolicyStatement({
-          actions: [
-            'codebuild:BatchGetBuilds',
-            'codebuild:StartBuild',
-            'codebuild:BatchGetBuildBatches',
-            'codebuild:StartBuildBatch',
-          ],
+          actions: ['codebuild:BatchGetBuilds', 'codebuild:StartBuild', 'codebuild:BatchGetBuildBatches', 'codebuild:StartBuildBatch'],
           resources: ['*'],
         }),
         new PolicyStatement({
@@ -289,10 +266,7 @@ export class CicdPipelineStack extends Stack {
     const iamRoleForStages = new Role(this, pascalCase(iamRoleForStagesName), {
       roleName: iamRoleForStagesName,
       path: '/',
-      assumedBy: new CompositePrincipal(
-        new ArnPrincipal(params.iamRoleForPipelineArn),
-        new ServicePrincipal('codebuild.amazonaws.com')
-      ),
+      assumedBy: new CompositePrincipal(new ArnPrincipal(params.iamRoleForPipelineArn), new ServicePrincipal('codebuild.amazonaws.com')),
       managedPolicies: [iamPolicyForSourceStage, iamPolicyForDeployStage],
     });
 

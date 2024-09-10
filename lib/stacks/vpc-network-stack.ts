@@ -12,7 +12,7 @@ export class VpcNetworkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    let vpcContext = this.util.getContext(this, 'vpc');
+    let vpcContext = this.util.getEnvConfig('vpc');
 
     // Creating a VPC and belonging resources.
     //

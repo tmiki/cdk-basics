@@ -1,28 +1,13 @@
 {
   "app": "npx ts-node --prefer-ts-exts bin/cdk-basics.ts",
   "watch": {
-    "include": [
-      "**"
-    ],
-    "exclude": [
-      "README.md",
-      "cdk*.json",
-      "**/*.d.ts",
-      "**/*.js",
-      "tsconfig.json",
-      "package*.json",
-      "yarn.lock",
-      "node_modules",
-      "test"
-    ]
+    "include": ["**"],
+    "exclude": ["README.md", "cdk*.json", "**/*.d.ts", "**/*.js", "tsconfig.json", "package*.json", "yarn.lock", "node_modules", "test"]
   },
   "context": {
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:checkSecretUsage": true,
-    "@aws-cdk/core:target-partitions": [
-      "aws",
-      "aws-cn"
-    ],
+    "@aws-cdk/core:target-partitions": ["aws", "aws-cn"],
     "@aws-cdk-containers/ecs-service-extensions:enableDefaultLogDriver": true,
     "@aws-cdk/aws-ec2:uniqueImdsv2TemplateName": true,
     "@aws-cdk/aws-ecs:arnFormatIncludesClusterName": true,
@@ -61,30 +46,6 @@
     "@aws-cdk/aws-rds:preventRenderingDeprecatedCredentials": true,
     "@aws-cdk/aws-codepipeline-actions:useNewDefaultBranchForCodeCommitSource": true,
     "@aws-cdk/aws-cloudwatch-actions:changeLambdaPermissionLogicalIdForLambdaAction": true,
-    "@aws-cdk/aws-codepipeline:crossAccountKeysDefaultValueToFalse": true,
-    "dev1": {
-      "vpc": {
-        "cidr": "172.16.0.0/19",
-        "useNatInstance": true,
-        "natGateways": 0
-      },
-      "cicdPipeline" : {
-        "gitRepository" :{
-          "owner": "tmiki",
-          "name": "examining-cicd-with-github",
-          "branch": "main"
-        }
-      }
-    },
-    "stg1": {
-
-    },
-    "qas1": {
-
-    },
-    "prd1": {
-
-    }
-
+    "@aws-cdk/aws-codepipeline:crossAccountKeysDefaultValueToFalse": true
   }
 }

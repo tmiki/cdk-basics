@@ -15,6 +15,7 @@ export const EnvConfigTest: EnvConfig = {
   vpc: {
     cidr: '172.16.0.0/19',
     natGateways: 3,
+    useNatInstance: false,
   },
   cicdPipeline: {
     apps: {

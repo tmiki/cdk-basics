@@ -15,22 +15,15 @@ export const EnvConfigDev1: EnvConfig = {
   vpc: {
     cidr: '172.16.0.0/19',
     natGateways: 3,
+    useNatInstance: true,
   },
   cicdPipeline: {
     apps: {
-      frontend: {
-        type: 'frontend',
-        gitRepository: {
-          owner: 'tmiki',
-          name: 'cdk-basics-frontend-sample',
-          branch: 'main',
-        },
-      },
-      backend: {
+      examining: {
         type: 'backend',
         gitRepository: {
           owner: 'tmiki',
-          name: 'cdk-basics-backend-sample',
+          name: 'examining-cicd-with-github',
           branch: 'main',
         },
       },

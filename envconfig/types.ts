@@ -9,35 +9,36 @@ export type RemovalPoliciesConfig = {
   logs: {
     cloudWatchLogs: RemovalPolicy;
   };
-}
+};
 
 export type VpcConfig = {
   cidr: string;
   natGateways: number;
-}
+  useNatInstance: boolean;
+};
 
 export type GitRepository = {
   owner: string;
   name: string;
   branch: string;
-}
+};
 
 export type App = {
   type: string;
   gitRepository: GitRepository;
-}
+};
 
 export type CicdPipelineConfig = {
   apps: {
     [key: string]: App;
   };
-}
+};
 
 export type EcrRepositoryConfig = {
   lifecycleRules: {
     maxImageCount: number;
   };
-}
+};
 
 export type CostBudgets = {
   monthlyBudget: {
@@ -47,7 +48,7 @@ export type CostBudgets = {
       actual: number;
     };
   };
-}
+};
 
 export type EnvConfig = {
   removalPolicies: RemovalPoliciesConfig;
@@ -55,7 +56,7 @@ export type EnvConfig = {
   cicdPipeline: CicdPipelineConfig;
   ecrRepository: EcrRepositoryConfig;
   costBudgets: CostBudgets;
-}
+};
 
 // EnvConfigのキーを1階層目に指定可能にするための型
 export type EnvConfigKey = keyof EnvConfig;
