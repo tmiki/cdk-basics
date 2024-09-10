@@ -1,13 +1,12 @@
-import { Construct } from 'constructs/lib/construct';
 import { ProjectEnvironment } from './project-environment';
 import { NamingUtil } from './naming-util';
 import { LookupUtil } from './lookup-util';
 import { DebugOutUtil } from './debug-out-util';
 import { EnvConfig, EnvConfigKey } from '../envconfig/types';
-import { EnvConfigDev1 } from '../envconfig/env_dev1';
-import { EnvConfigPrd1 } from '../envconfig/env_prd1';
-import { EnvConfigQas1 } from '../envconfig/env_qas1';
-import { EnvConfigStg1 } from '../envconfig/env_stg1';
+import { EnvConfigDev1 } from '../envconfig/env-dev1';
+import { EnvConfigPrd1 } from '../envconfig/env-prd1';
+import { EnvConfigQas1 } from '../envconfig/env-qas1';
+import { EnvConfigStg1 } from '../envconfig/env-stg1';
 
 export type AllEnvConfigs = {
   [key: string]: EnvConfig;
