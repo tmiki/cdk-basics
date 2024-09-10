@@ -19,14 +19,12 @@ export class CicdPipelineStack extends Stack {
 
     // S3 Buckets
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html
-    // const artifactBucketName = this.util.naming.generateResourceNameWithAccountIdCurrentRegion('cicd-artifact');
     const artifactBucketName = this.util.getResourceNameString('cicd-artifact');
     const artifactBucket = new Bucket(this, artifactBucketName.pascalCase, {
       bucketName: artifactBucketName.kebabCase,
       autoDeleteObjects: true,
       removalPolicy: RemovalPolicy.DESTROY,
     });
-    // const deployDestBucketName = this.util.naming.generateResourceNameWithAccountIdCurrentRegion('cicd-deploy-dest');
     const deployDestBucketName = this.util.getResourceNameString('cicd-deploy-dest');
     const deployDestinationBucket = new Bucket(this, deployDestBucketName.pascalCase, {
       bucketName: deployDestBucketName.kebabCase,
@@ -36,7 +34,6 @@ export class CicdPipelineStack extends Stack {
 
     // CodeStar connection with GitHub apps
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_codestarconnections.CfnConnection.html
-    // const connectionName = this.util.naming.generateResourceName('examining-conn');
     const connectionName = this.util.getResourceNameString('examining-conn');
     if (connectionName.kebabCase.length > 32) {
       throw new Error(`The name lenght of a CodeStar connection cannot exceed 32 characters. connectionName: ${connectionName.kebabCase}`);
@@ -179,7 +176,6 @@ export class CicdPipelineStack extends Stack {
     this.util.debugOut.writeJsonFile(outFileName, iamPolicyJson);
 
     // Create the IAM Role for CodePipeline pipelines.
-    // const iamRoleForPipelineName = this.util.naming.generateResourceName(`${namePrefix}-role`);
     const iamRoleForPipelineName = this.util.getResourceNameString(`${namePrefix}-role`);
     const iamRoleForPipeline = new Role(this, iamRoleForPipelineName.pascalCase, {
       roleName: iamRoleForPipelineName.kebabCase,
@@ -209,7 +205,6 @@ export class CicdPipelineStack extends Stack {
 
     // Create the IAM Custom Managed Policy for the Role of CodePipeline stages.
     // - Source stage
-    // const iamPolicyForSourceStageName = this.util.naming.generateResourceName(`${namePrefix}-source-policy`);
     const iamPolicyForSourceStageName = this.util.getResourceNameString(`${namePrefix}-source-policy`);
     const iamPolicyForSourceStage = new ManagedPolicy(this, iamPolicyForSourceStageName.pascalCase, {
       managedPolicyName: iamPolicyForSourceStageName.kebabCase,
@@ -243,7 +238,6 @@ export class CicdPipelineStack extends Stack {
     });
 
     // - Deploy stage
-    // const iamPolicyForDeployStageName = this.util.naming.generateResourceName(`${namePrefix}-deploy-policy`);
     const iamPolicyForDeployStageName = this.util.getResourceNameString(`${namePrefix}-deploy-policy`);
     const iamPolicyForDeployStage = new ManagedPolicy(this, iamPolicyForDeployStageName.pascalCase, {
       managedPolicyName: iamPolicyForDeployStageName.kebabCase,
@@ -270,7 +264,6 @@ export class CicdPipelineStack extends Stack {
     });
 
     // Create the IAM Role for CodeBuild/CodeDeploy tasks.
-    // const iamRoleForStagesName = this.util.naming.generateResourceName(`${namePrefix}-role`);
     const iamRoleForStagesName = this.util.getResourceNameString(`${namePrefix}-role`);
     const iamRoleForStages = new Role(this, iamRoleForStagesName.pascalCase, {
       roleName: iamRoleForStagesName.kebabCase,
