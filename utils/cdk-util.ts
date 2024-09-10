@@ -7,6 +7,7 @@ import { EnvConfigDev1 } from '../envconfig/env-dev1';
 import { EnvConfigPrd1 } from '../envconfig/env-prd1';
 import { EnvConfigQas1 } from '../envconfig/env-qas1';
 import { EnvConfigStg1 } from '../envconfig/env-stg1';
+import { ResourceNameString } from './resource-name-string';
 
 export type AllEnvConfigs = {
   [key: string]: EnvConfig;
@@ -19,13 +20,6 @@ const allEnvConfigs: AllEnvConfigs = {
 };
 
 export class CdkUtil {
-  // Composition objects.
-  e: ProjectEnvironment;
-  envConfig: EnvConfig;
-  naming: NamingUtil;
-  lookup: LookupUtil;
-  debugOut: DebugOutUtil;
-
   // Make this class Singleton.
   private static instance: CdkUtil;
   public static getInstance(): CdkUtil {
@@ -35,6 +29,13 @@ export class CdkUtil {
     return CdkUtil.instance;
   }
 
+  // Composition objects.
+  e: ProjectEnvironment;
+  envConfig: EnvConfig;
+  naming: NamingUtil;
+  lookup: LookupUtil;
+  debugOut: DebugOutUtil;
+
   // Initialize the object itself.
   constructor() {
     this.e = new ProjectEnvironment();
@@ -42,6 +43,11 @@ export class CdkUtil {
     this.naming = new NamingUtil(this.e);
     this.lookup = new LookupUtil(this.e);
     this.debugOut = new DebugOutUtil(this.e);
+  }
+
+  // Return an extended string object represents AWS resources.
+  public getResourceNameString(name: string) {
+    return new ResourceNameString(name, this.e);
   }
 
   // Retrieve a set of variables in the EnvConfig object.

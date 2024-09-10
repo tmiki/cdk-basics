@@ -1,4 +1,4 @@
-import { paramCase } from 'change-case';
+import { paramCase, pascalCase, snakeCase } from 'change-case';
 import { ProjectEnvironment } from './project-environment';
 
 export class NamingUtil {

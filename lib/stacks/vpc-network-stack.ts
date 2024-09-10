@@ -12,7 +12,7 @@ export class VpcNetworkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    let vpcContext = this.util.getEnvConfig('vpc');
+    let vpcConfig = this.util.getEnvConfig('vpc');
 
     // Creating a VPC and belonging resources.
     //
@@ -23,7 +23,7 @@ export class VpcNetworkStack extends Stack {
     // Build the VPC Construct props with basic settings.
     const vpcPropsBase = {
       vpcName: id,
-      ipAddresses: ec2.IpAddresses.cidr(vpcContext.cidr),
+      ipAddresses: ec2.IpAddresses.cidr(vpcConfig.cidr),
       maxAzs: 3,
       reservedAzs: 1,
       subnetConfiguration: [
@@ -56,7 +56,7 @@ export class VpcNetworkStack extends Stack {
         },
       ],
       restrictDefaultSecurityGroup: false,
-      natGateways: vpcContext.natGateways,
+      natGateways: vpcConfig.natGateways,
     };
 
     let vpcProps;
@@ -66,7 +66,7 @@ export class VpcNetworkStack extends Stack {
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IMachineImage.html
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.MachineImage.html
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.AmazonLinux2023ImageSsmParameterProps.html
-    if (vpcContext.useNatInstance) {
+    if (vpcConfig.useNatInstance) {
       const natInstanceProvider = ec2.NatProvider.instance({
         instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO),
         machineImage: ec2.MachineImage.latestAmazonLinux2023({
