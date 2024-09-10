@@ -62,16 +62,15 @@ export class VpcNetworkStack extends Stack {
     let vpcProps;
     // Create NAT instance(s) if the "vpc.useNatInstance" is true.
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.NatProvider.html
-    // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.NatInstanceProps.html
+    // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.NatInstanceProviderV2.html
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IMachineImage.html
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.MachineImage.html
     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.AmazonLinux2023ImageSsmParameterProps.html
     if (vpcConfig.useNatInstance) {
-      const natInstanceProvider = ec2.NatProvider.instance({
+      const natInstanceKeyName = this.util.getResourceNameString('nat-instance-key');
+      const natInstanceProvider = ec2.NatProvider.instanceV2({
         instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO),
-        machineImage: ec2.MachineImage.latestAmazonLinux2023({
-          cpuType: ec2.AmazonLinuxCpuType.X86_64,
-        }),
+        keyPair: ec2.KeyPair.fromKeyPairName(this, natInstanceKeyName.pascalCase, natInstanceKeyName.kebabCase),
       });
 
       vpcProps = {
