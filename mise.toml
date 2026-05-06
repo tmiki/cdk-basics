@@ -1,0 +1,8 @@
+[tools]
+node = "24.15.0"
+"npm:typescript" = "5.3.3"
+"npm:aws-cdk" = "2.1120.0"
+
+[tasks.install]
+run = "npm install"
+description = "依存パッケージインストール"
