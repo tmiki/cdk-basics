@@ -7,16 +7,8 @@ if [ -z ${AWS_PROFILE} ] || [ -z ${ENV_NAME} ] || [ -z ${PJ_CODE_NAME} ] || [ -z
     exit 1;
 fi
 
-echo "continue"
-
-cd ./cdk/
-
-echo "continue"
-
-# Initialize local environment.
-rm -f cdk.context.json
-npm ci
-npm run build
+# Print a first message.
+echo "The following stacks will be deployed."
 cdk ls
 
 # Create ECR repositories at first.
@@ -27,7 +19,7 @@ cdk deploy --require-approval never ${PJ_CODE_NAME}-${ENV_NAME}-ecr
 docker image pull public.ecr.aws/docker/library/hello-world:linux
 
 ## build the string of the ECR repository base URI.
-ECR_URI_DOMAIN_NAME=${CDK_DEFAULT_ACCOUNT}.dkr.ecr.${CDK_DEFAULT_REGION}.amazonaws.com
+export ECR_URI_DOMAIN_NAME=${CDK_DEFAULT_ACCOUNT}.dkr.ecr.${CDK_DEFAULT_REGION}.amazonaws.com
 
 ## login to the ECR service.
 aws ecr get-login-password --region ${CDK_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_URI_DOMAIN_NAME}

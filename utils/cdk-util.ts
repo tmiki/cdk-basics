@@ -2,6 +2,7 @@ import { EnvConfigDev1 } from '../envconfig/env-dev1';
 import { EnvConfigPrd1 } from '../envconfig/env-prd1';
 import { EnvConfigQas1 } from '../envconfig/env-qas1';
 import { EnvConfigStg1 } from '../envconfig/env-stg1';
+import { EnvConfigTest } from '../envconfig/env-test';
 import { EnvConfig, EnvConfigKey } from '../envconfig/types';
 import { DebugOutUtil } from './debug-out-util';
 import { ResourceLookup } from './lookup-util';
@@ -16,6 +17,7 @@ const allEnvConfigs: AllEnvConfigs = {
   stg1: EnvConfigStg1,
   qas1: EnvConfigQas1,
   prd1: EnvConfigPrd1,
+  test: EnvConfigTest,
 };
 
 export class CdkUtil {

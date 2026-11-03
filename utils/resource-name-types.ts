@@ -40,4 +40,6 @@ export enum ParameterStorePartialKey {
   // ACM Certificates
   ACM_GLOBAL_CERT_ARN = 'acm/global-cert/arn',
   ACM_REGIONAL_CERT_ARN = 'acm/regional-cert/arn',
+  // ECR
+  ECR_WEBAPI_LATEST_IMAGE_URI_SECRET_ARN = 'ecr/webapi-latest-image-uri-secret/arn',
 }

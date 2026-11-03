@@ -19,6 +19,14 @@ export const EnvConfigTest: EnvConfig = {
   },
   cicdPipeline: {
     apps: {
+      examining: {
+        type: 'backend',
+        gitRepository: {
+          owner: 'tmiki',
+          name: 'examining-cicd-with-github',
+          branch: 'main',
+        },
+      },
       frontend: {
         type: 'frontend',
         gitRepository: {
